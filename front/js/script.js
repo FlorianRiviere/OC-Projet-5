@@ -1,17 +1,19 @@
-const url = "http://localhost:3000/api/products";
-
-fetch(url)
-  .then((res) => res.json())
-  .then((data) => {
+fetch("http://localhost:3000/api/products")
+  .then(function (res) {
+    if (res.ok) {
+      return res.json();
+    }
+  })
+  .then(function (data) {
     console.log(data);
 
-    /****** Affichage des produits *******/
+    // Affichage des produits dans la page accueil
 
     for (let i = 0; i < data.length; i++) {
       const items = document.querySelector("#items");
 
       const card = document.createElement("a");
-      card.href = "../html/product.html";
+      card.href = `../html/product.html?id=${data[i]._id}`;
 
       const article = document.createElement("article");
 
@@ -32,4 +34,6 @@ fetch(url)
       article.appendChild(productDescription);
     }
   })
-  .catch((Error) => console.log(Error));
+  .catch(function (Error) {
+    console.log(Error);
+  });
