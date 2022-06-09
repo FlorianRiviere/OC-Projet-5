@@ -114,6 +114,10 @@ if (localStorage.length == 0) {
 
         const changeQuantity = document.querySelector(".itemQuantity");
 
+        let foundProduct = cart.find(
+          (p) => p.id == item.id && p.color == item.color
+        );
+        console.log(foundProduct);
         changeQuantity.addEventListener("change", (e) => {
           item[i].quantity = changeQuantity.value;
           return localStorage.setItem("orderProduct", JSON.stringify(item));
