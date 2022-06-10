@@ -110,24 +110,24 @@ if (localStorage.length == 0) {
         const totalPrice = document.querySelector("#totalPrice");
         totalPrice.textContent = totalCart;
 
-        //Modification et suppression d'articles
+        //  Modification des quantités
 
-        const changeQuantity = document.querySelector(".itemQuantity");
-
-        let foundProduct = cart.find(
-          (p) => p.id == item.id && p.color == item.color
-        );
-        console.log(foundProduct);
-        changeQuantity.addEventListener("change", (e) => {
-          item[i].quantity = changeQuantity.value;
-          return localStorage.setItem("orderProduct", JSON.stringify(item));
+        let changeQuantity = document.querySelectorAll(".itemQuantity");
+        Array.from(changeQuantity);
+        changeQuantity[i].addEventListener("change", function () {
+          item[i].quantity = parseFloat(this.value);
+          localStorage.setItem("orderProduct", JSON.stringify(item));
+          window.location.reload();
         });
 
-        const deleteButton = document.querySelector(".deleteItem");
-        const productSelected = deleteButton.closest("article");
-        deleteButton.addEventListener("click", (e) => {
-          localStorage.removeItem("orderProduct", productSelected);
-          return localStorage.setItem("orderProduct", JSON.stringify(item));
+        //  Suppression d'articles
+
+        let deleteButton = document.querySelectorAll(".deleteItem");
+        Array.from(deleteButton);
+        deleteButton[i].addEventListener("click", function () {
+          item.splice(i, 1);
+          localStorage.setItem("orderProduct", JSON.stringify(item));
+          window.location.reload();
         });
       }) /* Fin function data */
 

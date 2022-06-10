@@ -47,7 +47,7 @@ fetch(`http://localhost:3000/api/products/${idProduct}`)
   });
 
 // localStorage
-
+// Bouton
 const button = document.querySelector("#addToCart");
 if (button != null) {
   button.addEventListener("click", (e) => {
@@ -58,6 +58,7 @@ if (button != null) {
       alert("S'il vous plait, veuillez choisir une couleur et une quantité !");
       return;
     }
+
     const addProduct = {
       id: idProduct,
       color: color,
