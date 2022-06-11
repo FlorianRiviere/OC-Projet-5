@@ -50,11 +50,11 @@ fetch(`http://localhost:3000/api/products/${idProduct}`)
 // Bouton
 const button = document.querySelector("#addToCart");
 if (button != null) {
-  button.addEventListener("click", (e) => {
+  button.addEventListener("click", function () {
     const color = document.querySelector("#colors").value;
     const quantity = document.querySelector("#quantity").value;
 
-    if (color == null || color === "" || quantity == null || quantity === "") {
+    if (color === "" || quantity === "") {
       alert("S'il vous plait, veuillez choisir une couleur et une quantité !");
       return;
     }
@@ -72,9 +72,10 @@ if (button != null) {
       item.push(addProduct);
       localStorage.setItem("orderProduct", JSON.stringify(item));
     } else {
-      let foundProduct = item.find((p) => p.id == addProduct.id);
-      let foundColor = item.find((p) => p.color == addProduct.color);
-      if (foundProduct != undefined && foundColor != undefined) {
+      let foundProduct = item.find(
+        (p) => p.id == addProduct.id && p.color == addProduct.color
+      );
+      if (foundProduct != undefined) {
         foundProduct.quantity =
           parseFloat(foundProduct.quantity) + addProduct.quantity;
         localStorage.setItem("orderProduct", JSON.stringify(item));

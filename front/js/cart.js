@@ -102,13 +102,14 @@ if (localStorage.length == 0) {
         for (let i = 0; i < arrayPrice.length; i++) {
           totalCart += arrayPrice[i];
         }
+        nb = new Intl.NumberFormat().format(totalCart);
 
         //  Affichage des articles et des prix totaux
 
         const totalArticle = document.querySelector("#totalQuantity");
         totalArticle.textContent = item.length;
         const totalPrice = document.querySelector("#totalPrice");
-        totalPrice.textContent = totalCart;
+        totalPrice.textContent = nb;
 
         //  Modification des quantités
 
@@ -137,4 +138,111 @@ if (localStorage.length == 0) {
         console.log(Error);
       });
   } /* Fin de la boucle */
-} /* Fin de la condition */
+} /* Fin de la condition "else" (if = panier vide) */
+
+/************************************************** Formulaires **************************************************/
+
+// Prénom
+
+let firstName = document.querySelector("#firstName");
+
+firstName.addEventListener("input", function () {
+  let firstNameRegExp = new RegExp("^[A-Z][A-Za-zéèê-]+$");
+
+  let firstNameTest = firstNameRegExp.test(firstName.value);
+  let firstNameMsg = document.querySelector("#firstNameErrorMsg");
+
+  if (firstNameTest) {
+    firstNameMsg.textContent = "";
+    firstName.style.border = "solid";
+    firstName.style.backgroundColor = "#9BE49B";
+  } else {
+    firstNameMsg.textContent = "champ non valide";
+    firstName.style.border = "solid";
+    firstName.style.backgroundColor = "#FF7A7A";
+  }
+});
+
+// Nom
+
+let lastName = document.querySelector("#lastName");
+
+lastName.addEventListener("input", function () {
+  let lastNameRegExp = new RegExp("^[A-Z][A-Za-zéèê-]+$");
+
+  let lastNameTest = lastNameRegExp.test(lastName.value);
+  let lastNameMsg = document.querySelector("#lastNameErrorMsg");
+
+  if (lastNameTest) {
+    lastNameMsg.textContent = "";
+    lastName.style.border = "solid";
+    lastName.style.backgroundColor = "#9BE49B";
+  } else {
+    lastNameMsg.textContent = "champ non valide";
+    lastName.style.border = "solid";
+    lastName.style.backgroundColor = "#FF7A7A";
+  }
+});
+
+// Adresse
+
+let address = document.querySelector("#address");
+
+address.addEventListener("input", function () {
+  let addressRegExp = new RegExp("([0-9] )([A-Za-zéèê-]+)");
+
+  let addressTest = addressRegExp.test(address.value);
+  let addressMsg = document.querySelector("#addressErrorMsg");
+
+  if (addressTest) {
+    addressMsg.textContent = "";
+    address.style.border = "solid";
+    address.style.backgroundColor = "#9BE49B";
+  } else {
+    addressMsg.textContent = "champ non valide";
+    address.style.border = "solid";
+    address.style.backgroundColor = "#FF7A7A";
+  }
+});
+
+// Ville
+
+let city = document.querySelector("#city");
+
+city.addEventListener("input", function () {
+  let cityRegExp = new RegExp("^[A-Z][A-Za-zéèê-]+$");
+
+  let cityTest = cityRegExp.test(city.value);
+  let cityMsg = document.querySelector("#cityErrorMsg");
+
+  if (cityTest) {
+    cityMsg.textContent = "";
+    city.style.border = "solid";
+    city.style.backgroundColor = "#9BE49B";
+  } else {
+    cityMsg.textContent = "champ non valide";
+    city.style.border = "solid";
+    city.style.backgroundColor = "#FF7A7A";
+  }
+});
+
+// Email
+
+let email = document.querySelector("#email");
+
+email.addEventListener("input", function () {
+  let emailRegExp = new RegExp("^[A-Za-z0-9.-_]+@+[A-Za-z]+[.]+[A-Za-z]+$");
+
+  let emailTest = emailRegExp.test(email.value);
+  let emailMsg = document.querySelector("#emailErrorMsg");
+
+  if (emailTest) {
+    emailMsg.textContent = "";
+    email.style.border = "solid";
+    email.style.backgroundColor = "#9BE49B";
+  } else {
+    emailMsg.textContent = "champ non valide";
+    email.style.border = "solid";
+    email.style.backgroundColor = "#FF7A7A";
+  }
+});
