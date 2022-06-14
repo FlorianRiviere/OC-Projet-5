@@ -5,8 +5,6 @@ fetch("http://localhost:3000/api/products")
     }
   })
   .then(function (data) {
-    console.log(data);
-
     // Affichage des produits dans la page accueil
 
     for (let i = 0; i < data.length; i++) {

@@ -10,8 +10,6 @@ fetch(`http://localhost:3000/api/products/${idProduct}`)
     }
   })
   .then(function (data) {
-    console.log(data);
-
     // Affichage des détails selon l'ID du produit
 
     let imgProduct = document.querySelector(".item__img");
@@ -46,8 +44,8 @@ fetch(`http://localhost:3000/api/products/${idProduct}`)
     console.log(Error);
   });
 
-// localStorage
-// Bouton
+// Envoi du produit dans le local storage
+
 const button = document.querySelector("#addToCart");
 if (button != null) {
   button.addEventListener("click", function () {
