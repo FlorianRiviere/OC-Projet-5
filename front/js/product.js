@@ -3,51 +3,49 @@
 let params = new URLSearchParams(window.location.search);
 let idProduct = params.get("id");
 
-fetch(`http://localhost:3000/api/products/${idProduct}`)
-  .then(function (res) {
+const fetchGet = fetch(`http://localhost:3000/api/products/${idProduct}`);
+fetchGet.then(async function (res) {
+  try {
     if (res.ok) {
-      return res.json();
-    }
-  })
-  .then(function (data) {
-    // Affichage des détails selon l'ID du produit
+      let data = await res.json();
+      // Affichage des détails selon l'ID du produit
 
-    function getProduct() {
-      // Création et paramétrage des balises HTML
+      function getProduct() {
+        // Création et paramétrage des balises HTML
 
-      let imgProduct = document.querySelector(".item__img");
-      let img = document.createElement("img");
-      img.src = data.imageUrl;
-      img.alt = data.altTxt;
-      imgProduct.appendChild(img);
+        let imgProduct = document.querySelector(".item__img");
+        let img = document.createElement("img");
+        img.src = data.imageUrl;
+        img.alt = data.altTxt;
+        imgProduct.appendChild(img);
 
-      let title = document.querySelector("#title");
-      title.textContent = data.name;
+        let title = document.querySelector("#title");
+        title.textContent = data.name;
 
-      let price = document.querySelector("#price");
-      price.textContent = data.price;
+        let price = document.querySelector("#price");
+        price.textContent = data.price;
 
-      let description = document.querySelector("#description");
-      description.textContent = data.description;
+        let description = document.querySelector("#description");
+        description.textContent = data.description;
 
-      // Affichage des couleurs selon l'ID du produit
+        // Affichage des couleurs selon l'ID du produit
 
-      for (let i = 0; i < data.colors.length; i++) {
-        let color = document.querySelector("#colors");
-        let option = document.createElement("option");
-        color.appendChild(option);
-        option.value = data.colors[i];
-        option.textContent = data.colors[i];
+        for (let i = 0; i < data.colors.length; i++) {
+          let color = document.querySelector("#colors");
+          let option = document.createElement("option");
+          color.appendChild(option);
+          option.value = data.colors[i];
+          option.textContent = data.colors[i];
+        }
       }
+      getProduct();
     }
-    getProduct();
-  })
+  } catch (Error) {
+    // Catch error
 
-  // Catch error
-
-  .catch(function (Error) {
     console.log(Error);
-  });
+  }
+});
 
 // Envoi du produit dans le local storage
 
