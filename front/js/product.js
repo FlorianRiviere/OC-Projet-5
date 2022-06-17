@@ -12,30 +12,35 @@ fetch(`http://localhost:3000/api/products/${idProduct}`)
   .then(function (data) {
     // Affichage des détails selon l'ID du produit
 
-    let imgProduct = document.querySelector(".item__img");
-    let img = document.createElement("img");
-    img.src = data.imageUrl;
-    img.alt = data.altTxt;
-    imgProduct.appendChild(img);
+    function getProduct() {
+      // Création et paramétrage des balises HTML
 
-    let title = document.querySelector("#title");
-    title.textContent = data.name;
+      let imgProduct = document.querySelector(".item__img");
+      let img = document.createElement("img");
+      img.src = data.imageUrl;
+      img.alt = data.altTxt;
+      imgProduct.appendChild(img);
 
-    let price = document.querySelector("#price");
-    price.textContent = data.price;
+      let title = document.querySelector("#title");
+      title.textContent = data.name;
 
-    let description = document.querySelector("#description");
-    description.textContent = data.description;
+      let price = document.querySelector("#price");
+      price.textContent = data.price;
 
-    // Affichage des couleurs selon l'ID du produit
+      let description = document.querySelector("#description");
+      description.textContent = data.description;
 
-    for (let i = 0; i < data.colors.length; i++) {
-      let color = document.querySelector("#colors");
-      let option = document.createElement("option");
-      color.appendChild(option);
-      option.value = data.colors[i];
-      option.textContent = data.colors[i];
+      // Affichage des couleurs selon l'ID du produit
+
+      for (let i = 0; i < data.colors.length; i++) {
+        let color = document.querySelector("#colors");
+        let option = document.createElement("option");
+        color.appendChild(option);
+        option.value = data.colors[i];
+        option.textContent = data.colors[i];
+      }
     }
+    getProduct();
   })
 
   // Catch error
@@ -46,41 +51,56 @@ fetch(`http://localhost:3000/api/products/${idProduct}`)
 
 // Envoi du produit dans le local storage
 
-const button = document.querySelector("#addToCart");
-if (button != null) {
-  button.addEventListener("click", function () {
-    const color = document.querySelector("#colors").value;
-    const quantity = document.querySelector("#quantity").value;
+function setLocalStorage() {
+  const button = document.querySelector("#addToCart");
+  if (button != null) {
+    button.addEventListener("click", function () {
+      const color = document.querySelector("#colors").value;
+      const quantity = document.querySelector("#quantity").value;
 
-    if (color === "" || quantity === "") {
-      alert("S'il vous plait, veuillez choisir une couleur et une quantité !");
-      return;
-    }
+      if (color === "" || quantity === "") {
+        alert(
+          "S'il vous plait, veuillez choisir une couleur et une quantité !"
+        );
+        return;
+      }
 
-    const addProduct = {
-      id: idProduct,
-      color: color,
-      quantity: Number(quantity),
-    };
+      const addProduct = {
+        id: idProduct,
+        color: color,
+        quantity: Number(quantity),
+      };
 
-    let item = JSON.parse(localStorage.getItem("orderProduct"));
+      let item = JSON.parse(localStorage.getItem("orderProduct"));
 
-    if (item == null) {
-      item = [];
-      item.push(addProduct);
-      localStorage.setItem("orderProduct", JSON.stringify(item));
-    } else {
-      let foundProduct = item.find(
-        (p) => p.id == addProduct.id && p.color == addProduct.color
-      );
-      if (foundProduct != undefined) {
-        foundProduct.quantity =
-          parseFloat(foundProduct.quantity) + addProduct.quantity;
-        localStorage.setItem("orderProduct", JSON.stringify(item));
-      } else {
+      // Panier vide
+      if (item == null) {
+        item = [];
         item.push(addProduct);
         localStorage.setItem("orderProduct", JSON.stringify(item));
+        alert("Produit ajouté au panier");
       }
-    }
-  });
+
+      // Si le produit de la même couleur est déjà dans le panier
+      else {
+        let foundProduct = item.find(
+          (p) => p.id == addProduct.id && p.color == addProduct.color
+        );
+        if (foundProduct != undefined) {
+          foundProduct.quantity =
+            parseFloat(foundProduct.quantity) + addProduct.quantity;
+          localStorage.setItem("orderProduct", JSON.stringify(item));
+          alert("Produit ajouté au panier");
+        }
+
+        // Si panier non vide et produit de la même couleur n'est pas dans le panier
+        else {
+          item.push(addProduct);
+          localStorage.setItem("orderProduct", JSON.stringify(item));
+          alert("Produit ajouté au panier");
+        }
+      }
+    });
+  }
 }
+setLocalStorage();

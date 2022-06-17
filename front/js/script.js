@@ -5,32 +5,40 @@ fetch("http://localhost:3000/api/products")
     }
   })
   .then(function (data) {
-    // Affichage des produits dans la page accueil
+    function getProducts() {
+      // Affichage des produits dans la page accueil
 
-    for (let i = 0; i < data.length; i++) {
-      const items = document.querySelector("#items");
+      for (let i = 0; i < data.length; i++) {
+        // Paramétrage des balises HTML à créer
 
-      const card = document.createElement("a");
-      card.href = `../html/product.html?id=${data[i]._id}`;
+        const items = document.querySelector("#items");
 
-      const article = document.createElement("article");
+        const card = document.createElement("a");
+        card.href = `../html/product.html?id=${data[i]._id}`;
 
-      const productImage = document.createElement("img");
-      productImage.src = data[i].imageUrl;
-      productImage.alt = data[i].altTxt;
+        const article = document.createElement("article");
 
-      const productName = document.createElement("h3");
-      productName.textContent = data[i].name;
+        const productImage = document.createElement("img");
+        productImage.src = data[i].imageUrl;
+        productImage.alt = data[i].altTxt;
 
-      const productDescription = document.createElement("p");
-      productDescription.textContent = data[i].description;
+        const productName = document.createElement("h3");
+        productName.textContent = data[i].name;
 
-      items.appendChild(card);
-      card.appendChild(article);
-      article.appendChild(productImage);
-      article.appendChild(productName);
-      article.appendChild(productDescription);
+        const productDescription = document.createElement("p");
+        productDescription.textContent = data[i].description;
+
+        // Création des balises HTML
+
+        items.appendChild(card);
+        card.appendChild(article);
+        article.appendChild(productImage);
+        article.appendChild(productName);
+        article.appendChild(productDescription);
+      }
     }
+
+    getProducts();
   })
   .catch(function (Error) {
     console.log(Error);
