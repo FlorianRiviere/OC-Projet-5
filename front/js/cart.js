@@ -1,22 +1,26 @@
-const cart = []; /* Tableau pour récupérer le localStorage */
+//  Tableau pour récupérer le localStorage
+
+const cart = [];
 const item = JSON.parse(localStorage.getItem("orderProduct"));
 cart.push(item);
 
-/* Tableau pour récupérer les prix totaux */
+//  Tableau pour récupérer les prix totaux
 
 let arrayPrice = [];
 
-/* Tableau pour envoyer à l'API */
+// Tableau des id à envoyer à l'API
 
 let products = [];
+
+// Partie panier
 
 if (localStorage.length == 0) {
   const cartItem = document.querySelector("#cart__items");
   cartItem.textContent = "Panier vide";
 } else {
-  for (let i = 0; i < item.length; i++) {
-    // Création du tableau récapitulatif du panier (html)
+  // Création du tableau récapitulatif du panier (html)
 
+  for (let i = 0; i < item.length; i++) {
     const fetchGet = fetch(`http://localhost:3000/api/products/${item[i].id}`);
 
     fetchGet.then(async function (res) {
@@ -171,18 +175,37 @@ if (localStorage.length == 0) {
 } /* Fin de la condition "else" (if = panier vide) */
 
 /************************************************************ Formulaires ************************************************************/
+// Déclarations des regex
+let firstNameRegExp = new RegExp("^[A-Z][A-Za-zéèê-]+$");
+let lastNameRegExp = new RegExp("([A-Z])([A-Za-zéèê-]+)");
+let addressRegExp = new RegExp("([0-9] )([A-Za-zéèê-]+)");
+let cityRegExp = new RegExp("^[A-Z][A-Za-zéèê-]+$");
+let emailRegExp = new RegExp(
+  "^[A-Za-z0-9.-_]+[@]{1}[A-Za-z0-9.-_]+[.][A-Za-z]+$"
+);
+
+// Déclarations des variables
+
+let firstName = document.querySelector("#firstName");
+let firstNameMsg = document.querySelector("#firstNameErrorMsg");
+
+let lastName = document.querySelector("#lastName");
+let lastNameMsg = document.querySelector("#lastNameErrorMsg");
+
+let address = document.querySelector("#address");
+let addressMsg = document.querySelector("#addressErrorMsg");
+
+let city = document.querySelector("#city");
+let cityMsg = document.querySelector("#cityErrorMsg");
+
+let email = document.querySelector("#email");
+let emailMsg = document.querySelector("#emailErrorMsg");
 
 function setForm() {
   // Prénom
   function setFirstName() {
-    let firstName = document.querySelector("#firstName");
-
     firstName.addEventListener("input", function () {
-      let firstNameRegExp = new RegExp("^[A-Z][A-Za-zéèê-]+$");
-
       let firstNameTest = firstNameRegExp.test(firstName.value);
-      let firstNameMsg = document.querySelector("#firstNameErrorMsg");
-
       if (firstNameTest) {
         firstNameMsg.textContent = "";
         firstName.style.border = "solid";
@@ -198,14 +221,8 @@ function setForm() {
 
   // Nom
   function setLastName() {
-    let lastName = document.querySelector("#lastName");
-
     lastName.addEventListener("input", function () {
-      let lastNameRegExp = new RegExp("([A-Z])([A-Za-zéèê-]+)");
-
       let lastNameTest = lastNameRegExp.test(lastName.value);
-      let lastNameMsg = document.querySelector("#lastNameErrorMsg");
-
       if (lastNameTest) {
         lastNameMsg.textContent = "";
         lastName.style.border = "solid";
@@ -221,14 +238,8 @@ function setForm() {
 
   // Adresse
   function setAdress() {
-    let address = document.querySelector("#address");
-
     address.addEventListener("input", function () {
-      let addressRegExp = new RegExp("([0-9] )([A-Za-zéèê-]+)");
-
       let addressTest = addressRegExp.test(address.value);
-      let addressMsg = document.querySelector("#addressErrorMsg");
-
       if (addressTest) {
         addressMsg.textContent = "";
         address.style.border = "solid";
@@ -244,14 +255,8 @@ function setForm() {
 
   // Ville
   function setCity() {
-    let city = document.querySelector("#city");
-
     city.addEventListener("input", function () {
-      let cityRegExp = new RegExp("^[A-Z][A-Za-zéèê-]+$");
-
       let cityTest = cityRegExp.test(city.value);
-      let cityMsg = document.querySelector("#cityErrorMsg");
-
       if (cityTest) {
         cityMsg.textContent = "";
         city.style.border = "solid";
@@ -267,16 +272,8 @@ function setForm() {
 
   // Email
   function setEmail() {
-    let email = document.querySelector("#email");
-
     email.addEventListener("input", function () {
-      let emailRegExp = new RegExp(
-        "^[A-Za-z0-9.-_]+[@]{1}[A-Za-z0-9.-_]+[.][A-Za-z]+$"
-      );
-
       let emailTest = emailRegExp.test(email.value);
-      let emailMsg = document.querySelector("#emailErrorMsg");
-
       if (emailTest) {
         emailMsg.textContent = "";
         email.style.border = "solid";
@@ -309,6 +306,16 @@ function orderCart() {
       city.value == "" ||
       email.value == ""
     ) {
+      return;
+    } else if (
+      firstNameRegExp.test(firstName.value) == false ||
+      lastNameRegExp.test(lastName.value) == false ||
+      addressRegExp.test(address.value) == false ||
+      cityRegExp.test(city.value) == false ||
+      emailRegExp.test(email.value) == false
+    ) {
+      click.preventDefault();
+      alert("Au moins 1 champ est non valide");
       return;
     } else {
       click.preventDefault();

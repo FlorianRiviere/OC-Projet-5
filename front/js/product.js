@@ -41,8 +41,6 @@ fetchGet.then(async function (res) {
       getProduct();
     }
   } catch (Error) {
-    // Catch error
-
     console.log(Error);
   }
 });
