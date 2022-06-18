@@ -1,9 +1,12 @@
+import { _apiUrl } from "../js/module.js";
+
 // Récupère ID dans l'URL
 
 let params = new URLSearchParams(window.location.search);
 let idProduct = params.get("id");
 
-const fetchGet = fetch(`http://localhost:3000/api/products/${idProduct}`);
+const fetchGet = fetch(`${_apiUrl}/${idProduct}`);
+
 fetchGet.then(async function (res) {
   try {
     if (res.ok) {
@@ -70,11 +73,13 @@ function setLocalStorage() {
       let item = JSON.parse(localStorage.getItem("orderProduct"));
 
       // Panier vide
+      let alertAddToCart = "Produit ajouté au panier";
+
       if (item == null) {
         item = [];
         item.push(addProduct);
         localStorage.setItem("orderProduct", JSON.stringify(item));
-        alert("Produit ajouté au panier");
+        alert(alertAddToCart);
       }
 
       // Si le produit de la même couleur est déjà dans le panier
@@ -86,14 +91,14 @@ function setLocalStorage() {
           foundProduct.quantity =
             parseFloat(foundProduct.quantity) + addProduct.quantity;
           localStorage.setItem("orderProduct", JSON.stringify(item));
-          alert("Produit ajouté au panier");
+          alert(alertAddToCart);
         }
 
         // Si panier non vide et produit de la même couleur n'est pas dans le panier
         else {
           item.push(addProduct);
           localStorage.setItem("orderProduct", JSON.stringify(item));
-          alert("Produit ajouté au panier");
+          alert(alertAddToCart);
         }
       }
     });

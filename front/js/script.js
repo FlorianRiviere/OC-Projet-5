@@ -1,13 +1,15 @@
-const fetchGet = fetch("http://localhost:3000/api/products");
+import { _apiUrl } from "../js/module.js";
+
+const fetchGet = fetch(_apiUrl);
 
 fetchGet.then(async function (res) {
   try {
     if (res.ok) {
       let data = await res.json();
 
-      function getProducts() {
-        // Affichage des produits dans la page accueil
+      // Affichage des produits dans la page accueil
 
+      function getProducts() {
         for (let i = 0; i < data.length; i++) {
           // Paramétrage des balises HTML à créer
 

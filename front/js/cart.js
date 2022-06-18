@@ -1,10 +1,12 @@
+import { _apiUrl } from "../js/module.js";
+
 //  Tableau pour récupérer le localStorage
 
 const cart = [];
 const item = JSON.parse(localStorage.getItem("orderProduct"));
 cart.push(item);
 
-//  Tableau pour récupérer les prix totaux
+//  Tableau pour récupérer les prix totaux de chaque article
 
 let arrayPrice = [];
 
@@ -12,7 +14,7 @@ let arrayPrice = [];
 
 let products = [];
 
-// Partie panier
+/************************************************************ Panier ************************************************************/
 
 if (localStorage.length == 0) {
   const cartItem = document.querySelector("#cart__items");
@@ -21,7 +23,7 @@ if (localStorage.length == 0) {
   // Création du tableau récapitulatif du panier (html)
 
   for (let i = 0; i < item.length; i++) {
-    const fetchGet = fetch(`http://localhost:3000/api/products/${item[i].id}`);
+    const fetchGet = fetch(`${_apiUrl}/${item[i].id}`);
 
     fetchGet.then(async function (res) {
       try {
@@ -63,7 +65,7 @@ if (localStorage.length == 0) {
               color.textContent = item[i].color;
 
               const price = document.createElement("p");
-              nb = new Intl.NumberFormat().format(data.price);
+              const nb = new Intl.NumberFormat().format(data.price);
               price.textContent = nb + " €";
 
               const settings = document.createElement("div");
@@ -111,17 +113,17 @@ if (localStorage.length == 0) {
             getProducts();
 
             // Calcul des prix totaux
+            let totalCart = 0;
             function getTotalPrice() {
               let totalPriceArticle = data.price * item[i].quantity;
               arrayPrice.push(totalPriceArticle);
 
-              let totalCart = 0;
               for (let i = 0; i < arrayPrice.length; i++) {
                 totalCart += arrayPrice[i];
               }
-              nb1 = new Intl.NumberFormat().format(totalCart);
             }
             getTotalPrice();
+            const nb1 = new Intl.NumberFormat().format(totalCart);
 
             //  Affichage des articles et des prix totaux
             function summaryCart() {
@@ -175,16 +177,14 @@ if (localStorage.length == 0) {
 } /* Fin de la condition "else" (if = panier vide) */
 
 /************************************************************ Formulaires ************************************************************/
-// Déclarations des regex
-let firstNameRegExp = new RegExp("^[A-Z][A-Za-zéèê-]+$");
-let lastNameRegExp = new RegExp("([A-Z])([A-Za-zéèê-]+)");
-let addressRegExp = new RegExp("([0-9] )([A-Za-zéèê-]+)");
-let cityRegExp = new RegExp("^[A-Z][A-Za-zéèê-]+$");
-let emailRegExp = new RegExp(
-  "^[A-Za-z0-9.-_]+[@]{1}[A-Za-z0-9.-_]+[.][A-Za-z]+$"
-);
 
-// Déclarations des variables
+// Déclarations des regex
+
+let textRegExp = new RegExp("[A-Z][A-Za-zéèê-]+");
+let addressRegExp = new RegExp("([0-9] )([A-Za-zéèê-]+)");
+let emailRegExp = new RegExp("[A-Za-z0-9.-_]+@{1}[A-Za-z0-9.-_]+[.][A-Za-z]+");
+
+// Récupération des éléments html
 
 let firstName = document.querySelector("#firstName");
 let firstNameMsg = document.querySelector("#firstNameErrorMsg");
@@ -201,87 +201,102 @@ let cityMsg = document.querySelector("#cityErrorMsg");
 let email = document.querySelector("#email");
 let emailMsg = document.querySelector("#emailErrorMsg");
 
+// Paramétrage des formulaires
+
+let border = "solid";
+
+let errorForm = "champ non valide";
+let errorBackground = "#FF7A7A";
+
+let validForm = "";
+let validBackground = "#9BE49B";
+
 function setForm() {
   // Prénom
+
   function setFirstName() {
     firstName.addEventListener("input", function () {
-      let firstNameTest = firstNameRegExp.test(firstName.value);
+      let firstNameTest = textRegExp.test(firstName.value);
       if (firstNameTest) {
-        firstNameMsg.textContent = "";
-        firstName.style.border = "solid";
-        firstName.style.backgroundColor = "#9BE49B";
+        firstNameMsg.textContent = validForm;
+        firstName.style.border = border;
+        firstName.style.backgroundColor = validBackground;
       } else {
-        firstNameMsg.textContent = "champ non valide";
-        firstName.style.border = "solid";
-        this.style.backgroundColor = "#FF7A7A";
+        firstNameMsg.textContent = errorForm;
+        firstName.style.border = border;
+        firstName.style.backgroundColor = errorBackground;
       }
     });
   }
   setFirstName();
 
   // Nom
+
   function setLastName() {
     lastName.addEventListener("input", function () {
-      let lastNameTest = lastNameRegExp.test(lastName.value);
+      let lastNameTest = textRegExp.test(lastName.value);
       if (lastNameTest) {
-        lastNameMsg.textContent = "";
-        lastName.style.border = "solid";
-        lastName.style.backgroundColor = "#9BE49B";
+        lastNameMsg.textContent = validForm;
+        lastName.style.border = border;
+        lastName.style.backgroundColor = validBackground;
       } else {
-        lastNameMsg.textContent = "champ non valide";
-        lastName.style.border = "solid";
-        lastName.style.backgroundColor = "#FF7A7A";
+        lastNameMsg.textContent = errorForm;
+        lastName.style.border = border;
+        lastName.style.backgroundColor = errorBackground;
       }
     });
   }
   setLastName();
 
   // Adresse
+
   function setAdress() {
     address.addEventListener("input", function () {
       let addressTest = addressRegExp.test(address.value);
       if (addressTest) {
-        addressMsg.textContent = "";
-        address.style.border = "solid";
-        address.style.backgroundColor = "#9BE49B";
+        addressMsg.textContent = validForm;
+        address.style.border = border;
+        address.style.backgroundColor = validBackground;
       } else {
-        addressMsg.textContent = "champ non valide";
-        address.style.border = "solid";
-        address.style.backgroundColor = "#FF7A7A";
+        addressMsg.textContent = errorForm;
+        address.style.border = border;
+        address.style.backgroundColor = errorBackground;
       }
     });
   }
   setAdress();
 
   // Ville
+
   function setCity() {
     city.addEventListener("input", function () {
-      let cityTest = cityRegExp.test(city.value);
+      let cityTest = textRegExp.test(city.value);
       if (cityTest) {
-        cityMsg.textContent = "";
-        city.style.border = "solid";
-        city.style.backgroundColor = "#9BE49B";
+        cityMsg.textContent = validForm;
+        city.style.border = border;
+        city.style.backgroundColor = validBackground;
       } else {
-        cityMsg.textContent = "champ non valide";
-        city.style.border = "solid";
-        city.style.backgroundColor = "#FF7A7A";
+        cityMsg.textContent = errorForm;
+        city.style.border = border;
+        city.style.backgroundColor = errorBackground;
       }
     });
   }
   setCity();
 
   // Email
+
   function setEmail() {
     email.addEventListener("input", function () {
       let emailTest = emailRegExp.test(email.value);
       if (emailTest) {
-        emailMsg.textContent = "";
-        email.style.border = "solid";
-        email.style.backgroundColor = "#9BE49B";
+        emailMsg.textContent = validForm;
+        email.style.border = border;
+        email.style.backgroundColor = validBackground;
       } else {
-        emailMsg.textContent = "champ non valide";
-        email.style.border = "solid";
-        email.style.backgroundColor = "#FF7A7A";
+        emailMsg.textContent = errorForm;
+        email.style.border = border;
+        email.style.backgroundColor = errorBackground;
       }
     });
   }
@@ -291,13 +306,18 @@ setForm();
 
 /********************************************* Validation des commandes *********************************************/
 
+let emptyCart = "panier vide";
+let formError = "Au moins 1 champ est non valide";
+
 function orderCart() {
   const orderButton = document.querySelector("#order");
 
   orderButton.addEventListener("click", function (click) {
+    // En cas de problèmes
+
     if (cart == null || cart == "") {
       click.preventDefault();
-      alert("Panier vide");
+      alert(emptyCart);
       return;
     } else if (
       firstName.value == "" ||
@@ -308,16 +328,18 @@ function orderCart() {
     ) {
       return;
     } else if (
-      firstNameRegExp.test(firstName.value) == false ||
-      lastNameRegExp.test(lastName.value) == false ||
+      textRegExp.test(firstName.value) == false ||
+      textRegExp.test(lastName.value) == false ||
       addressRegExp.test(address.value) == false ||
-      cityRegExp.test(city.value) == false ||
+      textRegExp.test(city.value) == false ||
       emailRegExp.test(email.value) == false
     ) {
       click.preventDefault();
-      alert("Au moins 1 champ est non valide");
+      alert(formError);
       return;
     } else {
+      // Envoi de la commande
+
       click.preventDefault();
 
       const contact = {
@@ -328,7 +350,7 @@ function orderCart() {
         email: email.value,
       };
 
-      const fetchPost = fetch("http://localhost:3000/api/products/order", {
+      const fetchPost = fetch(`${_apiUrl}/order`, {
         method: "POST",
         body: JSON.stringify({ contact, products }),
         headers: {
