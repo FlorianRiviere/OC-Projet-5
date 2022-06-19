@@ -64,6 +64,8 @@ function setLocalStorage() {
         return;
       }
 
+      // Déclaration des variables et constantes
+
       const addProduct = {
         id: idProduct,
         color: color,
@@ -72,8 +74,9 @@ function setLocalStorage() {
 
       let item = JSON.parse(localStorage.getItem("orderProduct"));
 
-      // Panier vide
       let alertAddToCart = "Produit ajouté au panier";
+
+      // Panier vide
 
       if (item == null) {
         item = [];

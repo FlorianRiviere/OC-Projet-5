@@ -16,7 +16,7 @@ let products = [];
 
 /************************************************************ Panier ************************************************************/
 
-if (localStorage.length == 0) {
+if (item == null || item == "") {
   const cartItem = document.querySelector("#cart__items");
   cartItem.textContent = "Panier vide";
 } else {
@@ -361,7 +361,7 @@ function orderCart() {
       fetchPost.then(async function (response) {
         try {
           const content = await response.json();
-          localStorage.clear();
+          localStorage.clear("orderProduct");
           window.location = `../html/confirmation.html?id=${content.orderId}`;
         } catch (error) {
           console.log(error);
