@@ -180,9 +180,10 @@ if (item == null || item == "") {
 
 // Déclarations des regex
 
-let textRegExp = new RegExp("[A-Z][A-Za-zéèê-]+");
+let textRegExp = new RegExp("^[A-Z][A-Za-zéèê-]+$");
 let addressRegExp = new RegExp("([0-9] )([A-Za-zéèê-]+)");
-let emailRegExp = new RegExp("[A-Za-z0-9.-_]+@{1}[A-Za-z0-9.-_]+[.][A-Za-z]+");
+let cityRegExp = new RegExp("^[A-Z][A-Za-zéèê' -]+$");
+let emailRegExp = new RegExp("^[A-Za-z0-9.-_]+@[A-Za-z0-9.-_]+[.][A-Za-z]+$");
 
 // Récupération des éléments html
 
@@ -270,7 +271,7 @@ function setForm() {
 
   function setCity() {
     city.addEventListener("input", function () {
-      let cityTest = textRegExp.test(city.value);
+      let cityTest = cityRegExp.test(city.value);
       if (cityTest) {
         cityMsg.textContent = validForm;
         city.style.border = border;

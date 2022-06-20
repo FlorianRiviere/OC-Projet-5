@@ -93,8 +93,12 @@ function setLocalStorage() {
         if (foundProduct != undefined) {
           foundProduct.quantity =
             parseFloat(foundProduct.quantity) + addProduct.quantity;
-          localStorage.setItem("orderProduct", JSON.stringify(item));
-          alert(alertAddToCart);
+          if (foundProduct.quantity > 100) {
+            alert("La quantité maximum est de 100");
+          } else {
+            localStorage.setItem("orderProduct", JSON.stringify(item));
+            alert(alertAddToCart);
+          }
         }
 
         // Si panier non vide et produit de la même couleur n'est pas dans le panier
